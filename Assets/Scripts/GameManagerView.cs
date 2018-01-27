@@ -21,6 +21,8 @@ public class GameManagerView : MonoBehaviour {
 		player1MovesText.text = "Moves:" + new string('▣', manager.player1.actionQueue.Count);
 		player2MovesText.text = new string('▣', manager.player2.actionQueue.Count) + ":Moves";
 
-		timeLeft.text = manager.gameMode == GameManager.GamePlayState.Executing ? (manager.storedTimestamp - Time.realtimeSinceStartup).ToString("F2") : string.Empty;
+		timeLeft.text = manager.gameMode == 
+				GameManager.GamePlayState.Executing && manager.gameType == GameManager.GameType.Speed 
+				? (manager.storedTimestamp - Time.realtimeSinceStartup).ToString("F2") : string.Empty;
 	}
 }

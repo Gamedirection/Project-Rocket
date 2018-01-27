@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour {
 
 	public float storedTimestamp;
 
+	public enum GameType { Strategy, Speed }
+	public GameType gameType = GameType.Strategy;
+
+
 	void Start() {
 		gameplay = new GamePlay();
 		player1 = new Player();
@@ -30,26 +34,50 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if(gameMode == GamePlayState.Selecting) {
-			//Each player selects 3 actions each.
-			ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-			ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+		#region Faster Real-time mode
+		if (gameType == GameType.Speed) {
+			if(gameMode == GamePlayState.Selecting) {
+				//Each player selects 3 actions each.
+				ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+				ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
 
-			//Process once each player has 3 actions.
-			if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
-				gameMode = GamePlayState.Executing;
-				StartCoroutine(ExecuteFirstMovesForever());
+				//Process once each player has 3 actions.
+				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
+					gameMode = GamePlayState.Executing;
+					StartCoroutine(ExecuteFirstMovesForever());
+				}
+			}
+			else if(gameMode == GamePlayState.Executing) {
+				//Player can add commands during the game.
+				ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+				ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+			}
+			else {
+				if(Input.GetKeyDown(KeyCode.Space))
+					EndGame();
 			}
 		}
-		else if(gameMode == GamePlayState.Executing) {
-			//Player can add commands during the game.
-			ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-			ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+		#endregion
+		#region Turn-based mode
+		else if (gameType == GameType.Strategy) {
+			if(gameMode == GamePlayState.Selecting) {
+				//Each player selects 3 actions each.
+				ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+				ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+
+				//Process once each player has 3 actions.
+				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
+					gameMode = GamePlayState.Executing;
+					StartCoroutine(ExecuteMoves());
+				}
+			}
+			else {
+				if(Input.GetKeyDown(KeyCode.Space))
+					EndGame();
+			}
 		}
-		else {
-			if(Input.GetKeyDown(KeyCode.Space))
-				EndGame();
-		}
+		#endregion
+
 	}
 
 	public void ScanPlayerInputs(Player player, params KeyCode[] keys) {

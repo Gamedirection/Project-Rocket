@@ -8,6 +8,8 @@ public class MainMenuUI : MonoBehaviour {
 
 	public static MainMenuUI MainMenuUISingleton;
 
+	public MainMenuGUIElements guiElements;
+
 	public enum MainMenuScreen { MainMenu, Instructions, Options, Credits, Game }
 	public MainMenuScreen curScreen = MainMenuScreen.MainMenu;
 
@@ -97,18 +99,24 @@ public class MainMenuUI : MonoBehaviour {
 
 	#region Main Menu
 	void MainMenuActions() {
-		if(Input.GetKeyDown(KeyCode.LeftArrow))
+		if(Input.GetKeyDown(KeyCode.LeftArrow)) {
 			mainMenuItem = Mathf.Max(mainMenuItem - 1, 0);
-		if(Input.GetKeyDown(KeyCode.RightArrow))
+			guiElements.pressJoystickLeft();
+		}
+		if(Input.GetKeyDown(KeyCode.RightArrow)) {
 			mainMenuItem = Mathf.Min(mainMenuItem + 1, 4);
+			guiElements.pressJoystickRight();
+		}
 
 		float startPoint = MainMenuBar.sizeDelta.x / 5f / 2f;
 		float offset = MainMenuBar.sizeDelta.x / 5f;
 		Vector2 goalPosition = new Vector2( -startPoint - offset * (mainMenuItem), 0);
 		MainMenuBar.anchoredPosition = Vector2.Lerp( MainMenuBar.anchoredPosition, goalPosition, Time.deltaTime * 3f);
 
-		if(Input.GetKeyDown(KeyCode.UpArrow))
+		if(Input.GetKeyDown(KeyCode.UpArrow)) {
 			AcceptMainMenuItem();
+			guiElements.pressAttackButton();
+		}
 	}
 
 	void AcceptMainMenuItem() {
@@ -196,35 +204,49 @@ public class MainMenuUI : MonoBehaviour {
 	#endregion
 
 	void OptionsMenuActions() {
-		if(Input.GetKeyDown(KeyCode.LeftArrow))
+		if(Input.GetKeyDown(KeyCode.LeftArrow)) {
 			optionsMenuItem = Mathf.Max(optionsMenuItem - 1, 0);
-		if(Input.GetKeyDown(KeyCode.RightArrow))
+			guiElements.pressJoystickLeft();
+		}
+		if(Input.GetKeyDown(KeyCode.RightArrow)) {
 			optionsMenuItem = Mathf.Min(optionsMenuItem + 1, 4);
+			guiElements.pressJoystickRight();
+		}
 
 		float startPoint = OptionsBar.sizeDelta.x / 5f / 2f;
 		float offset = OptionsBar.sizeDelta.x / 5f;
 		Vector2 goalPosition = new Vector2( -startPoint - offset * (optionsMenuItem), 0);
 		OptionsBar.anchoredPosition = Vector2.Lerp( OptionsBar.anchoredPosition, goalPosition, Time.deltaTime * 3f);
 
-		if(Input.GetKeyDown(KeyCode.UpArrow))
+		if(Input.GetKeyDown(KeyCode.UpArrow)) {
 			AcceptOptionsMenuItem();
+			guiElements.pressAttackButton();
+		}
 
-		if(Input.GetKeyDown(KeyCode.DownArrow))
+		if(Input.GetKeyDown(KeyCode.DownArrow)) {
 			GoToMenu(MainMenuScreen.MainMenu);
+			guiElements.pressShieldButton();
+		}
 	}
 
 	void InstructionMenuActions() {
-		if(Input.GetKeyDown(KeyCode.UpArrow))
+		if(Input.GetKeyDown(KeyCode.UpArrow)) {
 			GoToMenu(MainMenuScreen.MainMenu);
+			guiElements.pressAttackButton();
+		}
 	}
 
 	void CreditsMenuActions() {
-		if(Input.GetKeyDown(KeyCode.UpArrow))
+		if(Input.GetKeyDown(KeyCode.UpArrow)) {
 			GoToMenu(MainMenuScreen.MainMenu);
+			guiElements.pressAttackButton();
+		}
 	}
 
 	void StartTheGame() {
 		var gameManagerObject = Resources.Load("GameManager");
 		Instantiate(gameManagerObject);
+
+		guiElements.pressAttackButton();
 	}
 }
