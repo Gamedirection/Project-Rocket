@@ -10,14 +10,25 @@ public class MainMenuUI : MonoBehaviour {
 
 	public MainMenuGUIElements guiElements;
 
-	public enum MainMenuScreen { MainMenu, Instructions, Options, Credits, Game }
+	public enum MainMenuScreen { MainMenu, Instructions, Options, Credits, Play, Game }
 	public MainMenuScreen curScreen = MainMenuScreen.MainMenu;
 
 	public RectTransform MainMenuPanel;
 	public RectTransform MainMenuBar;
 	public int mainMenuItem = 0;
 
+	public RectTransform PlayPanel;
+	public Image[] gameModes;
+	public Image[] playerModes;
+	public int choosenGameMode = 0;
+	public int choosenPlayerMode = 0;
+	public Color highlightedColor;
+	public int curPlayMenuSubMenu = 0;
+	public Image[] playMenuArrows;
+
 	public RectTransform InstructionsPanel;
+	public Image[] instructionPages;
+	public int instructionPage;
 
 	public RectTransform OptionsPanel;
 	public RectTransform OptionsBar;
@@ -40,6 +51,10 @@ public class MainMenuUI : MonoBehaviour {
 		switch(curScreen) {
 			case MainMenuScreen.MainMenu:
 				MainMenuActions();
+				break;
+
+			case MainMenuScreen.Play:
+				PlayMenuActions();
 				break;
 
 			case MainMenuScreen.Instructions:
@@ -68,6 +83,7 @@ public class MainMenuUI : MonoBehaviour {
 
 	void ClearMenus() {
 		MainMenuPanel.gameObject.SetActive(false);
+		PlayPanel.gameObject.SetActive(false);
 		InstructionsPanel.gameObject.SetActive(false);
 		OptionsPanel.gameObject.SetActive(false);
 		CreditsPanel.gameObject.SetActive(false);
@@ -77,6 +93,10 @@ public class MainMenuUI : MonoBehaviour {
 		switch(curScreen) {
 			case MainMenuScreen.MainMenu:
 				MainMenuPanel.gameObject.SetActive(true);
+				break;
+
+			case MainMenuScreen.Play:
+				PlayPanel.gameObject.SetActive(true);
 				break;
 
 			case MainMenuScreen.Instructions:
@@ -123,9 +143,8 @@ public class MainMenuUI : MonoBehaviour {
 		switch(mainMenuItem) {
 			//Play
 			case 0:
-				GoToMenu(MainMenuScreen.Game);
-				StartTheGame();
-				Debug.Log("Going to main game");
+				GoToMenu(MainMenuScreen.Play);
+				Debug.Log("Going to play menu");
 				break;
 			//Instruction
 			case 1:
@@ -197,9 +216,9 @@ public class MainMenuUI : MonoBehaviour {
 
 		optionTexts[0].text = string.Format(Screen.currentResolution.width + "x" + Screen.currentResolution.height, 0);
 		optionTexts[1].text = Screen.fullScreen ? "Fullscreen" : "Windowed";
-		optionTexts[2].text = string.Format("Master Volume\n{0} dB", masterVolume);
-		optionTexts[3].text = string.Format("Music Volume\n{0} dB", musicVolume);
-		optionTexts[4].text = string.Format("SFX Volume\n{0} dB", sfxVolume);
+		optionTexts[2].text = string.Format("Master Vol\n{0} dB", masterVolume);
+		optionTexts[3].text = string.Format("Music Vol\n{0} dB", musicVolume);
+		optionTexts[4].text = string.Format("SFX Vol\n{0} dB", sfxVolume);
 	}
 	#endregion
 
@@ -230,7 +249,14 @@ public class MainMenuUI : MonoBehaviour {
 	}
 
 	void InstructionMenuActions() {
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+			instructionPage = instructionPage == 0 ? 1 : 0;
+			instructionPages[instructionPage].enabled = true;
+			instructionPages[(instructionPage + 1) % 2].enabled = false;
+		}
+
+
+		if (Input.GetKeyDown(KeyCode.UpArrow)) {
 			GoToMenu(MainMenuScreen.MainMenu);
 			guiElements.pressAttackButton();
 		}
@@ -240,6 +266,67 @@ public class MainMenuUI : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.UpArrow)) {
 			GoToMenu(MainMenuScreen.MainMenu);
 			guiElements.pressAttackButton();
+		}
+	}
+
+	void PlayMenuActions() {
+		playMenuArrows[0].enabled = curPlayMenuSubMenu == 0;
+		playMenuArrows[1].enabled = curPlayMenuSubMenu == 1;
+
+		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+			switch(curPlayMenuSubMenu) {
+				case 0:
+					choosenGameMode = choosenGameMode == 0 ? 1 : 0;
+					gameModes[choosenGameMode].color = Color.white;
+					gameModes[(choosenGameMode + 1) % 2].color = Color.red;
+					break;
+
+				case 1:
+					choosenPlayerMode = choosenPlayerMode == 0 ? 1 : 0;
+					playerModes[choosenPlayerMode].color = Color.white;
+					playerModes[(choosenPlayerMode + 1) % 2].color = Color.red;
+					break;
+
+				case 2:
+					//choosenGameMode = choosenGameMode == 0 ? 1 : 0;
+					//gameModes[choosenGameMode].color = Color.white;
+					//gameModes[(choosenGameMode + 1) % 2].color = Color.red;
+					break;
+			}
+		}
+
+		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+			switch(curPlayMenuSubMenu) {
+				case 0:
+					curPlayMenuSubMenu = 1;
+					break;
+
+				case 1:
+					curPlayMenuSubMenu = 2;
+					break;
+
+				case 2:
+					curPlayMenuSubMenu = 0;
+					GoToMenu(MainMenuScreen.Game);
+					StartTheGame();
+					break;
+			}
+		}
+
+		if(Input.GetKeyDown(KeyCode.DownArrow)) {
+			switch(curPlayMenuSubMenu) {
+				case 0:
+					GoToMenu(MainMenuScreen.MainMenu);
+					break;
+
+				case 1:
+					curPlayMenuSubMenu = 0;
+					break;
+
+				case 2:
+					curPlayMenuSubMenu = 1;
+					break;
+			}
 		}
 	}
 

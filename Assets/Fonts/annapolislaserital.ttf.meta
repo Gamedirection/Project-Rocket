@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: c0bced4dc0b638247ade55e713769d51
+timeCreated: 1517090945
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Annapolis Laser Italic
+  fontNames:
+  - Annapolis Laser Italic
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9c98edb0340cc0d4798aa6ebccafc8ae, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
