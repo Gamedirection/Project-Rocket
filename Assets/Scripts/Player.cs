@@ -8,7 +8,7 @@ public class Player {
 	public int Position;// { get; set; }
 	public int Health;// { get; set; }
 	public bool Defending;// { get; set; }
-	public int maxQueueActions = 3;
+	public int maxQueueActions = 6;
 	public Queue<PlayerAction> actionQueue = new Queue<PlayerAction>();
 
 	public Player() {

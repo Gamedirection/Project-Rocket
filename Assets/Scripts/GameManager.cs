@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
 	public Player player1;
 	public Player player2;
 
+	public float storedTimestamp;
+
 	void Start() {
 		gameplay = new GamePlay();
 		player1 = new Player();
@@ -33,11 +35,16 @@ public class GameManager : MonoBehaviour {
 			ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
 			ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
 
-			//We are done picking actions
-			if(Input.GetKeyDown(KeyCode.Return)) {
+			//Process once each player has 3 actions.
+			if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
 				gameMode = GamePlayState.Executing;
-				StartCoroutine(ExecuteMoves());
+				StartCoroutine(ExecuteFirstMovesForever());
 			}
+		}
+		else if(gameMode == GamePlayState.Executing) {
+			//Player can add commands during the game.
+			ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+			ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
 		}
 		else {
 			if(Input.GetKeyDown(KeyCode.Space))
@@ -89,6 +96,25 @@ public class GameManager : MonoBehaviour {
 				yield return new WaitForSeconds(1f);
 		}
 		gameMode = GamePlayState.Selecting;
+	}
+
+	IEnumerator ExecuteFirstMovesForever() {
+		Debug.Log("Match Start!\n");
+
+		//Execute the actions one at a time forever.
+		while (!gameplay.gameOver) {
+			gameplay.ExecuteTurn();
+
+			if(gameplay.gameOver) {
+				gameMode = GamePlayState.Ended;
+				yield break;
+			}
+			else {
+				storedTimestamp = Time.realtimeSinceStartup + 3f;
+				yield return new WaitForSeconds(3f);
+			}
+		}
+		//gameMode = GamePlayState.Selecting;
 	}
 
 	public void EndGame() {

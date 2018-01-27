@@ -12,7 +12,7 @@ public class GameManagerView : MonoBehaviour {
 	public Vector3[] player1Positions;
 	public Vector3[] player2Positions;
 
-	public Text player1MovesText, player2MovesText;
+	public Text player1MovesText, player2MovesText, timeLeft;
 
 	void Update () {
 		player1Model.position = Vector3.Lerp(player1Model.position, player1Positions[manager.player1.Position], Time.deltaTime * 5f);
@@ -20,5 +20,7 @@ public class GameManagerView : MonoBehaviour {
 
 		player1MovesText.text = "Moves:" + new string('▣', manager.player1.actionQueue.Count);
 		player2MovesText.text = new string('▣', manager.player2.actionQueue.Count) + ":Moves";
+
+		timeLeft.text = manager.gameMode == GameManager.GamePlayState.Executing ? (manager.storedTimestamp - Time.realtimeSinceStartup).ToString("F2") : string.Empty;
 	}
 }
