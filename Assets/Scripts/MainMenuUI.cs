@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour {
 
@@ -18,11 +19,13 @@ public class MainMenuUI : MonoBehaviour {
 	public RectTransform OptionsBar;
 	public int optionsMenuItem = 0;
 	public AudioMixer audioMixer;
+	public Text[] optionTexts;
 
 	public RectTransform CreditsPanel;
 
 	private void Start() {
 		GoToMenu(MainMenuScreen.MainMenu);
+		UpdateOptionTexts();
 	}
 
 	void Update() {
@@ -171,25 +174,39 @@ public class MainMenuUI : MonoBehaviour {
 			case 2:
 				float masterVolume;
 				audioMixer.GetFloat("Master Volume", out masterVolume);
-
-				audioMixer.SetFloat("Master Volume", 0f);
+				masterVolume = (masterVolume - 5f) % -60f;
+				audioMixer.SetFloat("Master Volume", masterVolume);
 				break;
 			//Music Volume
 			case 3:
 				float musicVolume;
 				audioMixer.GetFloat("Music Volume", out musicVolume);
-
-				audioMixer.SetFloat("Music Volume", 0f);
+				musicVolume = (musicVolume - 5f) % -60f;
+				audioMixer.SetFloat("Music Volume", musicVolume);
 				break;
 			//SFX Volume
 			case 4:
 				float sfxVolume;
 				audioMixer.GetFloat("SFX Volume", out sfxVolume);
-
-				audioMixer.SetFloat("SFX Volume", 0f);
+				sfxVolume = (sfxVolume - 5f) % -60f;
+				audioMixer.SetFloat("SFX Volume", sfxVolume);
 				break;
 			default:
 				break;
 		}
+		UpdateOptionTexts();
+	}
+
+	void UpdateOptionTexts() {
+		float masterVolume, musicVolume, sfxVolume;
+		audioMixer.GetFloat("Master Volume", out masterVolume);
+		audioMixer.GetFloat("Music Volume", out musicVolume);
+		audioMixer.GetFloat("SFX Volume", out sfxVolume);
+
+		optionTexts[0].text = string.Format(Screen.currentResolution.width + "x" + Screen.currentResolution.height, 0);
+		optionTexts[1].text = Screen.fullScreen ? "Fullscreen" : "Windowed";
+		optionTexts[2].text = string.Format("Master Volume\n{0} dB", masterVolume);
+		optionTexts[3].text = string.Format("Music Volume\n{0} dB", musicVolume);
+		optionTexts[4].text = string.Format("SFX Volume\n{0} dB", sfxVolume);
 	}
 }
