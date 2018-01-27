@@ -36,6 +36,14 @@ public class GamePlay {
 		if(player1.Health <= 0 || player2.Health <= 0) {
 			gameOver = true;
 			Debug.Log("\n=========Game Over!==============");
+			if(player1.Health > 0 && player2.Health <= 0)
+				Debug.Log("Player 1 wins!");
+			else if(player1.Health <= 0 && player2.Health > 0)
+				Debug.Log("Player 2 wins!");
+			else if(player1.Health <= 0 && player2.Health <= 0)
+				Debug.Log("Draw! Both are losers!");
+
+			Debug.Log("Press space to continue.");
 		}
 	}
 

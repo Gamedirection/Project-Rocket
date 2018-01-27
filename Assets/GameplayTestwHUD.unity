@@ -416,69 +416,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &354879899
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 354879901}
-  - component: {fileID: 354879900}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &354879900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 354879899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee6c564450cef354ab11457867e2083c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameMode: 0
-  gameplay:
-    player1:
-      playerNumber: 0
-      Position: 0
-      Health: 0
-      Defending: 0
-    player2:
-      playerNumber: 0
-      Position: 0
-      Health: 0
-      Defending: 0
-    gameOver: 0
-  player1:
-    playerNumber: 0
-    Position: 0
-    Health: 0
-    Defending: 0
-  player2:
-    playerNumber: 0
-    Position: 0
-    Health: 0
-    Defending: 0
---- !u!4 &354879901
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 354879899}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &449497431
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +970,6 @@ GameObject:
   m_Component:
   - component: {fileID: 939842139}
   - component: {fileID: 939842138}
-  - component: {fileID: 939842134}
   m_Layer: 0
   m_Name: HUD Camera
   m_TagString: Untagged
@@ -1041,33 +977,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &939842134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 939842133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b28694e7af030443831d55b2091c236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curScreen: 0
-  MainMenuPanel: {fileID: 1544657795}
-  MainMenuBar: {fileID: 876425158}
-  mainMenuItem: 0
-  InstructionsPanel: {fileID: 1713093792}
-  OptionsPanel: {fileID: 1796093626}
-  OptionsBar: {fileID: 1269707718}
-  optionsMenuItem: 0
-  audioMixer: {fileID: 24100000, guid: b92259a54854d394ca65359c3570bc9d, type: 2}
-  optionTexts:
-  - {fileID: 254167425}
-  - {fileID: 449497432}
-  - {fileID: 2085976136}
-  - {fileID: 1395405839}
-  - {fileID: 1664015093}
-  CreditsPanel: {fileID: 16490243}
 --- !u!20 &939842138
 Camera:
   m_ObjectHideFlags: 0
@@ -1117,7 +1026,7 @@ Transform:
   - {fileID: 243919889}
   - {fileID: 1582843916}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1005188136
 GameObject:
@@ -1496,8 +1405,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1402450593}
+  - component: {fileID: 1402450594}
   m_Layer: 5
-  m_Name: ControlPanel
+  m_Name: MenuHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1522,6 +1432,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1402450594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1402450592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b28694e7af030443831d55b2091c236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curScreen: 0
+  MainMenuPanel: {fileID: 1544657795}
+  MainMenuBar: {fileID: 876425158}
+  mainMenuItem: 0
+  InstructionsPanel: {fileID: 1713093792}
+  OptionsPanel: {fileID: 1796093626}
+  OptionsBar: {fileID: 1269707718}
+  optionsMenuItem: 0
+  audioMixer: {fileID: 24100000, guid: b92259a54854d394ca65359c3570bc9d, type: 2}
+  optionTexts:
+  - {fileID: 254167425}
+  - {fileID: 449497432}
+  - {fileID: 2085976136}
+  - {fileID: 1395405839}
+  - {fileID: 1664015093}
+  CreditsPanel: {fileID: 16490243}
 --- !u!1 &1544657794
 GameObject:
   m_ObjectHideFlags: 0

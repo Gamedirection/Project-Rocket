@@ -8,6 +8,7 @@ public class Player {
 	public int Position;// { get; set; }
 	public int Health;// { get; set; }
 	public bool Defending;// { get; set; }
+	public int maxQueueActions = 3;
 	public Queue<PlayerAction> actionQueue = new Queue<PlayerAction>();
 
 	public Player() {
@@ -25,22 +26,29 @@ public class Player {
 	public enum ActionType { Move, Block, Attack, Nothing }
 
 	public void MovePlayer(int moveAmount) {
+		if(Position + moveAmount > 2 || Position + moveAmount < 0)
+			Debug.Log(string.Format("Player {0} moves {1}, but didn't go anywhere.", playerNumber, moveAmount > 0 ? "Right" : "Left"));
+		else
+			Debug.Log(string.Format("Player {0} moves {1}.", playerNumber, moveAmount > 0 ? "Right" : "Left"));
+
 		Position = Mathf.Clamp(Position + moveAmount, 0, 2);
-		Debug.Log(string.Format("Player {0} Moves {1}", playerNumber, moveAmount > 0 ? "Right" : "Left"));
 	}
 
 	public void Block() {
 		Defending = true;
-		Debug.Log(string.Format("Player {0} Defends!", playerNumber));
+		Debug.Log(string.Format("Player {0} defends!", playerNumber));
 	}
 
 	public void Attack(Player enemyPlayer, int damage) {
 		if(this.Position == enemyPlayer.Position && !enemyPlayer.Defending) {
 			enemyPlayer.Health -= damage;
-			Debug.Log(string.Format("Player {0} Attacks! Deals {1} Damage!", playerNumber, damage));
+			Debug.Log(string.Format("Player {0} attacks! Deals {1} Damage!", playerNumber, damage));
+		}
+		else if(this.Position == enemyPlayer.Position && enemyPlayer.Defending) {
+			Debug.Log(string.Format("Player {0} attack was blocked!", playerNumber));
 		}
 		else {
-			Debug.Log(string.Format("Player {0} Attacks, but it didn't work!", playerNumber));
+			Debug.Log(string.Format("Player {0} missed!", playerNumber));
 		}
 	}
 
@@ -64,8 +72,15 @@ public class Player {
 		}
 	}
 
-	public void AddActionToQueue(PlayerAction action) {
-		actionQueue.Enqueue( action );
+	public bool AddActionToQueue(PlayerAction action) {
+		if(actionQueue.Count < maxQueueActions) {
+			actionQueue.Enqueue( action );
+			return true;
+		}
+		else {
+			Debug.Log("Player "+ playerNumber +" cannot enter more actions.");
+			return false;
+		}
 	}
 
 }
