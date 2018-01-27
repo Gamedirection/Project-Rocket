@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour {
 	public enum GameType { Strategy, Speed }
 	public GameType gameType = GameType.Strategy;
 
+	public bool isPlayer2AI = false;
+
 
 	void Start() {
 		gameplay = new GamePlay();

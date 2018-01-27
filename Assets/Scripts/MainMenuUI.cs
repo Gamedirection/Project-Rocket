@@ -332,7 +332,10 @@ public class MainMenuUI : MonoBehaviour {
 
 	void StartTheGame() {
 		var gameManagerObject = Resources.Load("GameManager");
-		Instantiate(gameManagerObject);
+		var manager = Instantiate(gameManagerObject) as GameManager;
+
+		manager.gameType = (GameManager.GameType)choosenGameMode;
+		manager.isPlayer2AI = choosenPlayerMode == 0;
 
 		guiElements.pressAttackButton();
 	}
