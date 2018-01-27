@@ -1131,6 +1131,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb78c0c232c83e246ae68c4f619008de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  supportHDRTextures: 1
+  supportDX11: 0
+  isSupported: 1
+  createdMaterials: []
+  shader: {fileID: 0}
+  material: {fileID: 0}
+  Distortion: 0.1
+  InputGamma: 2.4
+  OutputGamma: 2.2
+  TextureSize: 768
 --- !u!20 &939842138
 Camera:
   m_ObjectHideFlags: 0

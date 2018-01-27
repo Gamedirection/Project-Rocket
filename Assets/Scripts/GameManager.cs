@@ -93,8 +93,14 @@ public class GameManager : MonoBehaviour {
 		}
 		//Attack
 		else if(Input.GetKeyDown(keys[2])) {
-			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Attack, 1)))
-				Debug.Log("Player "+ player.playerNumber +" Selects Attack");
+			var attackingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Attack);
+			if(attackingAction.Count() <= 0) {
+				if (player.AddActionToQueue(new PlayerAction(Player.ActionType.Attack, 1)))
+					Debug.Log("Player "+ player.playerNumber +" Selects Attack");
+			}
+			else {
+				Debug.Log("Player "+ player.playerNumber +" cannot use Attack again this turn.");
+			}
 		}
 		//Defend
 		else if(Input.GetKeyDown(keys[3])) {
