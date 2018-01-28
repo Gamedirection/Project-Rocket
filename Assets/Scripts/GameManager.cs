@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour {
 	public GameType gameType = GameType.Strategy;
 
 	public bool isPlayer2AI = false;
+	public float waitTimeSpeed = 3, waitTimeStrategy = 1;
 
+	MainMenuGUIElements guiElements;
 
 	void Start() {
 		gameplay = new GamePlay();
@@ -29,8 +31,14 @@ public class GameManager : MonoBehaviour {
 		player1.playerNumber = 1;
 		player2.playerNumber = 2;
 
+		player1.maxQueueActions = gameType == GameType.Speed ? 6 : 3;
+		player2.maxQueueActions = gameType == GameType.Speed ? 6 : 3;
+
 		gameplay.player1 = player1;
 		gameplay.player2 = player2;
+
+		DisplayGameLog.ClearLog();
+		guiElements = FindObjectOfType<MainMenuGUIElements>();
 
 		Debug.Log("=========Game Start=========\n");
 	}
@@ -46,7 +54,7 @@ public class GameManager : MonoBehaviour {
 				//Process once each player has 3 actions.
 				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
 					gameMode = GamePlayState.Executing;
-					StartCoroutine(ExecuteFirstMovesForever());
+					StartCoroutine(ExecuteFirstMovesForever(waitTimeSpeed));
 				}
 			}
 			else if(gameMode == GamePlayState.Executing) {
@@ -70,7 +78,7 @@ public class GameManager : MonoBehaviour {
 				//Process once each player has 3 actions.
 				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
 					gameMode = GamePlayState.Executing;
-					StartCoroutine(ExecuteMoves());
+					StartCoroutine(ExecuteMoves(waitTimeStrategy));
 				}
 			}
 			else {
@@ -85,20 +93,32 @@ public class GameManager : MonoBehaviour {
 	public void ScanPlayerInputs(Player player, params KeyCode[] keys) {
 		//Move Left
 		if(Input.GetKeyDown(keys[0])) {
-			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Move, -1)))
+			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Move, -1))) {
 				Debug.Log("Player "+ player.playerNumber +" Selects Move Left");
+				if(isPlayer2AI) {
+					guiElements.pressJoystickLeft();
+				}
+			}
 		}
 		//Move Right
 		else if(Input.GetKeyDown(keys[1])) {
-			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Move, 1)))
+			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Move, 1))) {
 				Debug.Log("Player "+ player.playerNumber +" Selects Move Right");
+				if(isPlayer2AI) {
+					guiElements.pressJoystickRight();
+				}
+			}
 		}
 		//Attack
 		else if(Input.GetKeyDown(keys[2])) {
 			var attackingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Attack);
 			if(attackingAction.Count() <= 0) {
-				if (player.AddActionToQueue(new PlayerAction(Player.ActionType.Attack, 1)))
+				if (player.AddActionToQueue(new PlayerAction(Player.ActionType.Attack, 1))) {
 					Debug.Log("Player "+ player.playerNumber +" Selects Attack");
+					if(isPlayer2AI) {
+						guiElements.pressAttackButton();
+					}
+				}
 			}
 			else {
 				Debug.Log("Player "+ player.playerNumber +" cannot use Attack again this turn.");
@@ -108,8 +128,12 @@ public class GameManager : MonoBehaviour {
 		else if(Input.GetKeyDown(keys[3])) {
 			var blockingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Block);
 			if(blockingAction.Count() <= 0) {
-				if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Block)))
+				if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Block))) {
 					Debug.Log("Player "+ player.playerNumber +" Selects Defend");
+					if(isPlayer2AI) {
+						guiElements.pressShieldButton();
+					}
+				}
 			}
 			else {
 				Debug.Log("Player "+ player.playerNumber +" cannot use Defend again this turn.");
@@ -117,7 +141,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator ExecuteMoves() {
+	IEnumerator ExecuteMoves(float waitTime) {
 		Debug.Log("Match Start!\n");
 
 		//Execute the actions until someone dies or we run out of moves
@@ -129,12 +153,12 @@ public class GameManager : MonoBehaviour {
 				yield break;
 			}
 			else
-				yield return new WaitForSeconds(1f);
+				yield return new WaitForSeconds(waitTime);
 		}
 		gameMode = GamePlayState.Selecting;
 	}
 
-	IEnumerator ExecuteFirstMovesForever() {
+	IEnumerator ExecuteFirstMovesForever(float waitTime) {
 		Debug.Log("Match Start!\n");
 
 		//Execute the actions one at a time forever.
@@ -146,8 +170,8 @@ public class GameManager : MonoBehaviour {
 				yield break;
 			}
 			else {
-				storedTimestamp = Time.realtimeSinceStartup + 3f;
-				yield return new WaitForSeconds(3f);
+				storedTimestamp = Time.realtimeSinceStartup + waitTime;
+				yield return new WaitForSeconds(waitTime);
 			}
 		}
 		//gameMode = GamePlayState.Selecting;

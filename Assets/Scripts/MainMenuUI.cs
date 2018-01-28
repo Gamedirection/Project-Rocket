@@ -22,7 +22,7 @@ public class MainMenuUI : MonoBehaviour {
 	public Image[] playerModes;
 	public int choosenGameMode = 0;
 	public int choosenPlayerMode = 0;
-	public Color highlightedColor;
+	public Color highlightedColor, normalColor;
 	public int curPlayMenuSubMenu = 0;
 	public Image[] playMenuArrows;
 
@@ -279,14 +279,14 @@ public class MainMenuUI : MonoBehaviour {
 			switch(curPlayMenuSubMenu) {
 				case 0:
 					choosenGameMode = choosenGameMode == 0 ? 1 : 0;
-					gameModes[choosenGameMode].color = Color.white;
-					gameModes[(choosenGameMode + 1) % 2].color = Color.red;
+					gameModes[choosenGameMode].color = highlightedColor;
+					gameModes[(choosenGameMode + 1) % 2].color = normalColor;
 					break;
 
 				case 1:
 					choosenPlayerMode = choosenPlayerMode == 0 ? 1 : 0;
-					playerModes[choosenPlayerMode].color = Color.white;
-					playerModes[(choosenPlayerMode + 1) % 2].color = Color.red;
+					playerModes[choosenPlayerMode].color = highlightedColor;
+					playerModes[(choosenPlayerMode + 1) % 2].color = normalColor;
 					break;
 
 				case 2:
@@ -333,9 +333,10 @@ public class MainMenuUI : MonoBehaviour {
 	}
 
 	void StartTheGame() {
-		var gameManagerObject = Resources.Load("GameManager");
-		var manager = Instantiate(gameManagerObject) as GameManager;
+		var gameManagerObject = Resources.Load("GameManager") as GameObject;
+		var managerObj = Instantiate(gameManagerObject);
 
+		var manager = managerObj.GetComponent<GameManager>();
 		manager.gameType = (GameManager.GameType)choosenGameMode;
 		manager.isPlayer2AI = choosenPlayerMode == 0;
 

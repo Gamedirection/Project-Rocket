@@ -35,21 +35,22 @@ public class GamePlay {
 	public void EvaluateEndGame() {
 		if(player1.Health <= 0 || player2.Health <= 0) {
 			gameOver = true;
-			Debug.Log("\n=========Game Over!==============");
+			DisplayGameLog.LogString("\n=========Game Over!==============");
 			if(player1.Health > 0 && player2.Health <= 0)
-				Debug.Log("Player 1 wins!");
+				DisplayGameLog.LogString("Player 1 wins!");
 			else if(player1.Health <= 0 && player2.Health > 0)
-				Debug.Log("Player 2 wins!");
+				DisplayGameLog.LogString("Player 2 wins!");
 			else if(player1.Health <= 0 && player2.Health <= 0)
-				Debug.Log("Draw! Both are losers!");
+				DisplayGameLog.LogString("Draw! Both are losers!");
 
-			Debug.Log("Press space to continue.");
+			DisplayGameLog.LogString("Press space to continue.");
 		}
 	}
 
 	public bool AllMovesCompleted() {
 		if(player1.actionQueue.Count == 0 && player2.actionQueue.Count == 0) {
-			Debug.Log("\nAll Moves Finished.");
+			DisplayGameLog.LogString("<color=yellow>All Moves Finished.</color>");
+			DisplayGameLog.LogString("<color=yellow>===================</color>");
 			return true;
 		}
 		return false;
