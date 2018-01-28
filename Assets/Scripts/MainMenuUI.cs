@@ -308,7 +308,10 @@ public class MainMenuUI : MonoBehaviour {
 					break;
 
 				case 1:
-					curPlayMenuSubMenu = 2;
+					//curPlayMenuSubMenu = 2;
+					curPlayMenuSubMenu = 0;
+					GoToMenu(MainMenuScreen.Game);
+					StartTheGame();
 					break;
 
 				case 2:

@@ -51,7 +51,10 @@ public class GameManager : MonoBehaviour {
 			if(gameMode == GamePlayState.Selecting) {
 				//Each player selects 3 actions each.
 				ScanPlayerInputs(player1);//, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-				ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				if(!isPlayer2AI)
+					ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				else
+					ScanAIPlayerInput(player2);
 
 				//Process once each player has 3 actions.
 				if(player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) { //Input.GetKeyDown(KeyCode.Return) && 
@@ -62,7 +65,10 @@ public class GameManager : MonoBehaviour {
 			else if(gameMode == GamePlayState.Executing) {
 				//Player can add commands during the game.
 				ScanPlayerInputs(player1);//, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-				ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				if(!isPlayer2AI)
+					ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				else
+					ScanAIPlayerInput(player2);
 			}
 			else {
 				if(InputManager.PressedStartButton(0) || InputManager.PressedStartButton(1))
@@ -75,7 +81,10 @@ public class GameManager : MonoBehaviour {
 			if(gameMode == GamePlayState.Selecting) {
 				//Each player selects 3 actions each.
 				ScanPlayerInputs(player1);//, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-				ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				if(!isPlayer2AI)
+					ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				else
+					ScanAIPlayerInput(player2);
 
 				//Process once each player has 3 actions.
 				if(player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) { //Input.GetKeyDown(KeyCode.Return) && 
@@ -147,6 +156,26 @@ public class GameManager : MonoBehaviour {
 			else {
 				Debug.Log("Player "+ player.playerNumber +" cannot use Defend again this turn.");
 			}
+		}
+	}
+
+	public void ScanAIPlayerInput(Player player) {
+		while(player.actionQueue.Count < player.maxQueueActions) {
+			int amount = UnityEngine.Random.value > 0.5f ? 1 : -1;
+			Player.ActionType action = (Player.ActionType)UnityEngine.Random.Range(0, 4);
+
+			if(action == Player.ActionType.Attack) {
+				var attackingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Attack);
+				if(attackingAction.Count() > 0)
+					continue;
+			}
+			if(action == Player.ActionType.Block) {
+				var blockingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Block);
+				if(blockingAction.Count() > 0)
+					continue;
+			}
+
+			player.AddActionToQueue(new PlayerAction(action, amount));
 		}
 	}
 

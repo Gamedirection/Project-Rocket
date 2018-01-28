@@ -49,6 +49,7 @@ public class Player {
 
 	public void Attack(Player enemyPlayer, int damage) {
 		if(this.Position == enemyPlayer.Position && !enemyPlayer.Defending) {
+			damage = 1;
 			enemyPlayer.Health -= damage;
 			DisplayGameLog.LogString(string.Format("Player {0} attacks! <color=orange>Deals {1} Damage</color>!", playerNumber, damage));
 			SpawnBullet(enemyPlayer);
