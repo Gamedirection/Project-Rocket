@@ -19,7 +19,7 @@ public class GameManagerView : MonoBehaviour {
 		player2Model.position = Vector3.Lerp(player2Model.position, player2Positions[manager.player2.Position], Time.deltaTime * 5f);
 
 		player1MovesText.text = "Phases:" + new string('▣', manager.player1.actionQueue.Count);
-		player2MovesText.text = new string('▣', manager.player2.actionQueue.Count) + ":Moves";
+		player2MovesText.text = new string('▣', manager.player2.actionQueue.Count) + ":Phases";
 
 		timeLeft.text = manager.gameMode == 
 				GameManager.GamePlayState.Executing && manager.gameType == GameManager.GameType.Speed 
