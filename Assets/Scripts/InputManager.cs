@@ -47,25 +47,25 @@ public class InputManager : MonoBehaviour {
 		if(playerNumber == 0)
 			return Input.GetKeyDown(KeyCode.UpArrow);
 		else
-			return Input.GetKeyDown(KeyCode.I);
+			return Input.GetKeyDown(KeyCode.W);
 	}
 	private static bool PressedDeclineButtonController(int playerNumber = 0) {
 		if(playerNumber == 0)
 			return Input.GetKeyDown(KeyCode.DownArrow);
 		else
-			return Input.GetKeyDown(KeyCode.K);
+			return Input.GetKeyDown(KeyCode.S);
 	}
 	private static bool PressedLeftButtonController(int playerNumber = 0) {
 		if(playerNumber == 0)
 			return Input.GetKeyDown(KeyCode.LeftArrow);
 		else
-			return Input.GetKeyDown(KeyCode.J);
+			return Input.GetKeyDown(KeyCode.A);
 	}
 	private static bool PressedRightButtonController(int playerNumber = 0) {
 		if(playerNumber == 0)
 			return Input.GetKeyDown(KeyCode.RightArrow);
 		else
-			return Input.GetKeyDown(KeyCode.L);
+			return Input.GetKeyDown(KeyCode.D);
 	}
 	private static bool PressedStartButtonController(int playerNumber = 0) {
 		if(playerNumber == 0)

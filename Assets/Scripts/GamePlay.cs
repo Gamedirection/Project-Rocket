@@ -36,14 +36,14 @@ public class GamePlay {
 		if(player1.Health <= 0 || player2.Health <= 0) {
 			gameOver = true;
 			DisplayGameLog.LogString("\n=========Game Over!==============");
+			DisplayGameLog.LogString("Press space to return to main menu.");
+
 			if(player1.Health > 0 && player2.Health <= 0)
 				DisplayGameLog.LogString("Player 1 wins!");
 			else if(player1.Health <= 0 && player2.Health > 0)
 				DisplayGameLog.LogString("Player 2 wins!");
 			else if(player1.Health <= 0 && player2.Health <= 0)
 				DisplayGameLog.LogString("Draw! Both are losers!");
-
-			DisplayGameLog.LogString("Press space to continue.");
 		}
 	}
 
