@@ -119,11 +119,11 @@ public class MainMenuUI : MonoBehaviour {
 
 	#region Main Menu
 	void MainMenuActions() {
-		if(Input.GetKeyDown(KeyCode.LeftArrow)) {
+		if(InputManager.PressedLeftButton()) {
 			mainMenuItem = Mathf.Max(mainMenuItem - 1, 0);
 			guiElements.pressJoystickLeft();
 		}
-		if(Input.GetKeyDown(KeyCode.RightArrow)) {
+		if(InputManager.PressedRightButton()) {
 			mainMenuItem = Mathf.Min(mainMenuItem + 1, 4);
 			guiElements.pressJoystickRight();
 		}
@@ -133,7 +133,7 @@ public class MainMenuUI : MonoBehaviour {
 		Vector2 goalPosition = new Vector2( -startPoint - offset * (mainMenuItem), 0);
 		MainMenuBar.anchoredPosition = Vector2.Lerp( MainMenuBar.anchoredPosition, goalPosition, Time.deltaTime * 3f);
 
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		if(InputManager.PressedAcceptButton()) {
 			AcceptMainMenuItem();
 			guiElements.pressAttackButton();
 		}
@@ -225,11 +225,11 @@ public class MainMenuUI : MonoBehaviour {
 	#endregion
 
 	void OptionsMenuActions() {
-		if(Input.GetKeyDown(KeyCode.LeftArrow)) {
+		if(InputManager.PressedLeftButton()) {
 			optionsMenuItem = Mathf.Max(optionsMenuItem - 1, 0);
 			guiElements.pressJoystickLeft();
 		}
-		if(Input.GetKeyDown(KeyCode.RightArrow)) {
+		if(InputManager.PressedRightButton()) {
 			optionsMenuItem = Mathf.Min(optionsMenuItem + 1, 4);
 			guiElements.pressJoystickRight();
 		}
@@ -239,33 +239,33 @@ public class MainMenuUI : MonoBehaviour {
 		Vector2 goalPosition = new Vector2( -startPoint - offset * (optionsMenuItem), 0);
 		OptionsBar.anchoredPosition = Vector2.Lerp( OptionsBar.anchoredPosition, goalPosition, Time.deltaTime * 3f);
 
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		if(InputManager.PressedAcceptButton()) {
 			AcceptOptionsMenuItem();
 			guiElements.pressAttackButton();
 		}
 
-		if(Input.GetKeyDown(KeyCode.DownArrow)) {
+		if(InputManager.PressedDeclineButton()) {
 			GoToMenu(MainMenuScreen.MainMenu);
 			guiElements.pressShieldButton();
 		}
 	}
 
 	void InstructionMenuActions() {
-		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+		if(InputManager.PressedLeftButton() || InputManager.PressedRightButton()) {
 			instructionPage = instructionPage == 0 ? 1 : 0;
 			instructionPages[instructionPage].enabled = true;
 			instructionPages[(instructionPage + 1) % 2].enabled = false;
 		}
 
 
-		if (Input.GetKeyDown(KeyCode.UpArrow)) {
+		if (InputManager.PressedAcceptButton()) {
 			GoToMenu(MainMenuScreen.MainMenu);
 			guiElements.pressAttackButton();
 		}
 	}
 
 	void CreditsMenuActions() {
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		if(InputManager.PressedAcceptButton()) {
 			GoToMenu(MainMenuScreen.MainMenu);
 			guiElements.pressAttackButton();
 		}
@@ -279,7 +279,7 @@ public class MainMenuUI : MonoBehaviour {
 		playerModes[choosenPlayerMode].color = highlightedColor;
 		playerModes[(choosenPlayerMode + 1) % 2].color = normalColor;
 
-		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+		if(InputManager.PressedLeftButton() || InputManager.PressedRightButton()) {
 			switch(curPlayMenuSubMenu) {
 				case 0:
 					choosenGameMode = choosenGameMode == 0 ? 1 : 0;
@@ -301,7 +301,7 @@ public class MainMenuUI : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		if(InputManager.PressedAcceptButton()) {
 			switch(curPlayMenuSubMenu) {
 				case 0:
 					curPlayMenuSubMenu = 1;
@@ -319,7 +319,7 @@ public class MainMenuUI : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetKeyDown(KeyCode.DownArrow)) {
+		if(InputManager.PressedDeclineButton()) {
 			switch(curPlayMenuSubMenu) {
 				case 0:
 					GoToMenu(MainMenuScreen.MainMenu);

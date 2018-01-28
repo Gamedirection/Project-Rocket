@@ -48,22 +48,22 @@ public class GameManager : MonoBehaviour {
 		if (gameType == GameType.Speed) {
 			if(gameMode == GamePlayState.Selecting) {
 				//Each player selects 3 actions each.
-				ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-				ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				ScanPlayerInputs(player1);//, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+				ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
 
 				//Process once each player has 3 actions.
-				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
+				if(player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) { //Input.GetKeyDown(KeyCode.Return) && 
 					gameMode = GamePlayState.Executing;
 					StartCoroutine(ExecuteFirstMovesForever(waitTimeSpeed));
 				}
 			}
 			else if(gameMode == GamePlayState.Executing) {
 				//Player can add commands during the game.
-				ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-				ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				ScanPlayerInputs(player1);//, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+				ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
 			}
 			else {
-				if(Input.GetKeyDown(KeyCode.Space))
+				if(InputManager.PressedStartButton(0) || InputManager.PressedStartButton(1))
 					EndGame();
 			}
 		}
@@ -72,15 +72,15 @@ public class GameManager : MonoBehaviour {
 		else if (gameType == GameType.Strategy) {
 			if(gameMode == GamePlayState.Selecting) {
 				//Each player selects 3 actions each.
-				ScanPlayerInputs(player1, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
-				ScanPlayerInputs(player2, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
+				ScanPlayerInputs(player1);//, KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4);
+				ScanPlayerInputs(player2);//, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R);
 
 				//Process once each player has 3 actions.
-				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
+				if(player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) { //Input.GetKeyDown(KeyCode.Return) && 
 					gameMode = GamePlayState.Executing;
 
 					var blipObj = Resources.Load("Blip");
-					Transform blipInstance = Instantiate(blipObj) as Transform;
+					Instantiate(blipObj);
 					//var blip = blipInstance.GetComponent<Transform>();
 					//blip.position = transform.position;
 					//blip.rotation = Quaternion.Euler(90,0,0);
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 			else {
-				if(Input.GetKeyDown(KeyCode.Space))
+				if(InputManager.PressedStartButton(0) || InputManager.PressedStartButton(1))
 					EndGame();
 			}
 		}
@@ -97,9 +97,9 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	public void ScanPlayerInputs(Player player, params KeyCode[] keys) {
+	public void ScanPlayerInputs(Player player) {
 		//Move Left
-		if(Input.GetKeyDown(keys[0])) {
+		if(InputManager.PressedLeftButton(player.playerNumber-1)) {
 			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Move, -1))) {
 				Debug.Log("Player "+ player.playerNumber +" Selects Move Left");
 				if(isPlayer2AI) {
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		//Move Right
-		else if(Input.GetKeyDown(keys[1])) {
+		else if(InputManager.PressedRightButton(player.playerNumber-1)) {
 			if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Move, 1))) {
 				Debug.Log("Player "+ player.playerNumber +" Selects Move Right");
 				if(isPlayer2AI) {
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		//Attack
-		else if(Input.GetKeyDown(keys[2])) {
+		else if(InputManager.PressedAcceptButton(player.playerNumber-1)) {
 			var attackingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Attack);
 			if(attackingAction.Count() <= 0) {
 				if (player.AddActionToQueue(new PlayerAction(Player.ActionType.Attack, 1))) {
@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		//Defend
-		else if(Input.GetKeyDown(keys[3])) {
+		else if(InputManager.PressedDeclineButton(player.playerNumber-1)) {
 			var blockingAction = player.actionQueue.Where(item => item.actionType == Player.ActionType.Block);
 			if(blockingAction.Count() <= 0) {
 				if(player.AddActionToQueue(new PlayerAction(Player.ActionType.Block))) {
