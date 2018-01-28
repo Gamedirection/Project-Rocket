@@ -18,7 +18,7 @@ public class GameManagerView : MonoBehaviour {
 		player1Model.position = Vector3.Lerp(player1Model.position, player1Positions[manager.player1.Position], Time.deltaTime * 5f);
 		player2Model.position = Vector3.Lerp(player2Model.position, player2Positions[manager.player2.Position], Time.deltaTime * 5f);
 
-		player1MovesText.text = "Moves:" + new string('▣', manager.player1.actionQueue.Count);
+		player1MovesText.text = "Phases:" + new string('▣', manager.player1.actionQueue.Count);
 		player2MovesText.text = new string('▣', manager.player2.actionQueue.Count) + ":Moves";
 
 		timeLeft.text = manager.gameMode == 

@@ -163,7 +163,9 @@ public class MainMenuUI : MonoBehaviour {
 				break;
 			//Quit
 			case 4:
+				#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false;
+				#endif
 				Application.Quit();
 				break;
 			default:break;
