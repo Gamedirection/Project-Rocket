@@ -1,0 +1,10 @@
+diff a/Assets/Shaders/New Material.mat b/Assets/Shaders/New Material.mat	(rejected hunks)
+@@ -55,7 +55,7 @@
+         m_Scale: {x: 1, y: 1}
+         m_Offset: {x: 0, y: 0}
+     m_Floats:
+-    - UseDiscard: 1
++    - UseDiscard: 0
+     - _BumpScale: 1
+     - _Cutoff: 0.5
+     - _DetailNormalMapScale: 1

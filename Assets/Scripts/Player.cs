@@ -5,9 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class Player {
 	public int playerNumber;
-	public int Position;// { get; set; }
-	public int Health;// { get; set; }
-	public bool Defending;// { get; set; }
+	public int Position = 0;// { get; set; }
+	public int Health = 1;// { get; set; }
+	public bool Defending = false;// { get; set; }
 	public int maxQueueActions = 3;
 	public Queue<PlayerAction> actionQueue = new Queue<PlayerAction>();
 
@@ -43,6 +43,20 @@ public class Player {
 		if(this.Position == enemyPlayer.Position && !enemyPlayer.Defending) {
 			enemyPlayer.Health -= damage;
 			DisplayGameLog.LogString(string.Format("Player {0} attacks! <color=orange>Deals {1} Damage</color>!", playerNumber, damage));
+
+			//Spawn explosion
+			var prefab = Resources.Load("Ugly Programmer Explosion");
+			var explosionObj = Object.Instantiate(prefab) as GameObject;
+			var explosion = explosionObj.transform;
+			var viewObj = Object.FindObjectOfType<GameManagerView>();
+			GameManagerView view = viewObj.GetComponent<GameManagerView>();
+			explosion.SetParent(view.transform);
+			if(enemyPlayer.playerNumber == 1)
+				explosion.position = view.transform.TransformPoint(view.player1Positions[enemyPlayer.Position]);
+			else
+				explosion.position = view.transform.TransformPoint(view.player2Positions[enemyPlayer.Position]);
+
+
 		}
 		else if(this.Position == enemyPlayer.Position && enemyPlayer.Defending) {
 			DisplayGameLog.LogString(string.Format("Player {0} attack was <color=cyan>blocked</color>!", playerNumber));

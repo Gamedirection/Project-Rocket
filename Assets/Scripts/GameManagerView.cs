@@ -36,6 +36,9 @@ public class GameManagerView : MonoBehaviour {
 		p1Shield.gameObject.SetActive(manager.player1.Defending);
 		p2Shield.gameObject.SetActive(manager.player2.Defending);
 
+		player1Model.gameObject.SetActive(manager.player1.Health > 0);
+		player2Model.gameObject.SetActive(manager.player2.Health > 0);
+
 		timeLeft.text = manager.gameMode == 
 				GameManager.GamePlayState.Executing && manager.gameType == GameManager.GameType.Speed 
 				? (manager.storedTimestamp - Time.realtimeSinceStartup).ToString("F2") : string.Empty;
