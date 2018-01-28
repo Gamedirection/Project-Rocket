@@ -27,11 +27,18 @@ public class Player {
 
 	public void MovePlayer(int moveAmount) {
 		if(Position + moveAmount > 2 || Position + moveAmount < 0)
-			DisplayGameLog.LogString(string.Format("Player {0} moves {1}, but didn't go anywhere.", playerNumber, moveAmount > 0 ? "Right" : "Left"));
+			DisplayGameLog.LogString(string.Format("Player {0} moves {1}, but didn't go anywhere.", playerNumber, moveAmount > 0 ? "Right"  : "Left"));
 		else
 			DisplayGameLog.LogString(string.Format("Player {0} moves {1}.", playerNumber, moveAmount > 0 ? "Right" : "Left"));
-
 		Position = Mathf.Clamp(Position + moveAmount, 0, 2);
+
+
+		if(moveAmount >= 0)
+			SFXPlayer.PlaySoundEffect("SpeedUp1", 1f);
+		else
+			SFXPlayer.PlaySoundEffect("SlowDown2", 1f);
+
+
 	}
 
 	public void Block() {
@@ -50,6 +57,8 @@ public class Player {
 		}
 		else if(this.Position == enemyPlayer.Position && enemyPlayer.Defending) {
 			DisplayGameLog.LogString(string.Format("Player {0} attack was <color=cyan>blocked</color>!", playerNumber));
+			SFXPlayer.PlaySoundEffect("DeflectingAtk", 2f);
+
 			SpawnReverseExplosion(enemyPlayer);
 		}
 		else {
@@ -61,6 +70,7 @@ public class Player {
 	public void SpawnBullet(Player enemyPlayer) {
 		//Spawn Bullet
 		var prefab = Resources.Load("Missed Shot");
+		SFXPlayer.PlaySoundEffect("Shoot2", 1f);
 		var bulletObj = Object.Instantiate(prefab) as GameObject;
 		var bullet = bulletObj.transform;
 		var viewObj = Object.FindObjectOfType<GameManagerView>();
@@ -69,6 +79,7 @@ public class Player {
 		if(enemyPlayer.playerNumber == 1) {
 			bullet.position = view.transform.TransformPoint(view.player2Positions[Position]);
 			bullet.LookAt(view.transform.TransformPoint(view.player1Positions[Position]));
+
 		}
 		else {
 			bullet.position = view.transform.TransformPoint(view.player1Positions[Position]);
@@ -79,6 +90,7 @@ public class Player {
 	public void SpawnExplosion(Player enemyPlayer) {
 		//Spawn explosion
 		var prefab = Resources.Load("Ugly Programmer Explosion");
+		SFXPlayer.PlaySoundEffect("Explosion2", 1f);
 		var explosionObj = Object.Instantiate(prefab) as GameObject;
 		var explosion = explosionObj.transform;
 		var viewObj = Object.FindObjectOfType<GameManagerView>();
@@ -93,6 +105,7 @@ public class Player {
 	public void SpawnReverseExplosion(Player enemyPlayer) {
 		//Spawn explosion
 		var prefab = Resources.Load("Ugly Programmer Explosion Reverse");
+		SFXPlayer.PlaySoundEffect("Explosion1", 1f);	
 		var explosionObj = Object.Instantiate(prefab) as GameObject;
 		var explosion = explosionObj.transform;
 		var viewObj = Object.FindObjectOfType<GameManagerView>();
@@ -131,6 +144,8 @@ public class Player {
 		}
 		else {
 			DisplayGameLog.LogString("Player "+ playerNumber +" cannot enter more actions.");
+			SFXPlayer.PlaySoundEffect("ErrorCommand", 1f);
+
 			return false;
 		}
 	}

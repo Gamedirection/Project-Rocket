@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
 
 		player1.playerNumber = 1;
 		player2.playerNumber = 2;
+		SFXPlayer.PlaySoundEffect("ShipIdleloop", 1f);
+
 
 		player1.maxQueueActions = gameType == GameType.Speed ? 6 : 3;
 		player2.maxQueueActions = gameType == GameType.Speed ? 6 : 3;
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour {
 
 		DisplayGameLog.ClearLog();
 		guiElements = FindObjectOfType<MainMenuGUIElements>();
-
+	
 		Debug.Log("=========Game Start=========\n");
 	}
 
