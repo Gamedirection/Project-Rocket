@@ -274,19 +274,23 @@ public class MainMenuUI : MonoBehaviour {
 	void PlayMenuActions() {
 		playMenuArrows[0].enabled = curPlayMenuSubMenu == 0;
 		playMenuArrows[1].enabled = curPlayMenuSubMenu == 1;
+		gameModes[choosenGameMode].color = highlightedColor;
+		gameModes[(choosenGameMode + 1) % 2].color = normalColor;
+		playerModes[choosenPlayerMode].color = highlightedColor;
+		playerModes[(choosenPlayerMode + 1) % 2].color = normalColor;
 
 		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
 			switch(curPlayMenuSubMenu) {
 				case 0:
 					choosenGameMode = choosenGameMode == 0 ? 1 : 0;
-					gameModes[choosenGameMode].color = highlightedColor;
-					gameModes[(choosenGameMode + 1) % 2].color = normalColor;
+					//gameModes[choosenGameMode].color = highlightedColor;
+					//gameModes[(choosenGameMode + 1) % 2].color = normalColor;
 					break;
 
 				case 1:
 					choosenPlayerMode = choosenPlayerMode == 0 ? 1 : 0;
-					playerModes[choosenPlayerMode].color = highlightedColor;
-					playerModes[(choosenPlayerMode + 1) % 2].color = normalColor;
+					//playerModes[choosenPlayerMode].color = highlightedColor;
+					//playerModes[(choosenPlayerMode + 1) % 2].color = normalColor;
 					break;
 
 				case 2:

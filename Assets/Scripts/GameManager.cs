@@ -78,6 +78,13 @@ public class GameManager : MonoBehaviour {
 				//Process once each player has 3 actions.
 				if(Input.GetKeyDown(KeyCode.Return) && player1.actionQueue.Count >= 3 && player2.actionQueue.Count >= 3) {
 					gameMode = GamePlayState.Executing;
+
+					var blipObj = Resources.Load("Blip");
+					Transform blipInstance = Instantiate(blipObj) as Transform;
+					//var blip = blipInstance.GetComponent<Transform>();
+					//blip.position = transform.position;
+					//blip.rotation = Quaternion.Euler(90,0,0);
+
 					StartCoroutine(ExecuteMoves(waitTimeStrategy));
 				}
 			}

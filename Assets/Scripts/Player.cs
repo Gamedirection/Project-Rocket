@@ -45,6 +45,7 @@ public class Player {
 			DisplayGameLog.LogString(string.Format("Player {0} attacks! <color=orange>Deals {1} Damage</color>!", playerNumber, damage));
 			SpawnBullet(enemyPlayer);
 			SpawnExplosion(enemyPlayer);
+			SFXPlayer.PlaySoundEffect("Explosion1", 1f);
 		}
 		else if(this.Position == enemyPlayer.Position && enemyPlayer.Defending) {
 			DisplayGameLog.LogString(string.Format("Player {0} attack was <color=cyan>blocked</color>!", playerNumber));
