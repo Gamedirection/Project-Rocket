@@ -43,27 +43,63 @@ public class Player {
 		if(this.Position == enemyPlayer.Position && !enemyPlayer.Defending) {
 			enemyPlayer.Health -= damage;
 			DisplayGameLog.LogString(string.Format("Player {0} attacks! <color=orange>Deals {1} Damage</color>!", playerNumber, damage));
-
-			//Spawn explosion
-			var prefab = Resources.Load("Ugly Programmer Explosion");
-			var explosionObj = Object.Instantiate(prefab) as GameObject;
-			var explosion = explosionObj.transform;
-			var viewObj = Object.FindObjectOfType<GameManagerView>();
-			GameManagerView view = viewObj.GetComponent<GameManagerView>();
-			explosion.SetParent(view.transform);
-			if(enemyPlayer.playerNumber == 1)
-				explosion.position = view.transform.TransformPoint(view.player1Positions[enemyPlayer.Position]);
-			else
-				explosion.position = view.transform.TransformPoint(view.player2Positions[enemyPlayer.Position]);
-
-
+			SpawnBullet(enemyPlayer);
+			SpawnExplosion(enemyPlayer);
 		}
 		else if(this.Position == enemyPlayer.Position && enemyPlayer.Defending) {
 			DisplayGameLog.LogString(string.Format("Player {0} attack was <color=cyan>blocked</color>!", playerNumber));
+			SpawnReverseExplosion(enemyPlayer);
 		}
 		else {
 			DisplayGameLog.LogString(string.Format("Player {0} missed!", playerNumber));
+			SpawnBullet(enemyPlayer);
 		}
+	}
+
+	public void SpawnBullet(Player enemyPlayer) {
+		//Spawn Bullet
+		var prefab = Resources.Load("Missed Shot");
+		var bulletObj = Object.Instantiate(prefab) as GameObject;
+		var bullet = bulletObj.transform;
+		var viewObj = Object.FindObjectOfType<GameManagerView>();
+		GameManagerView view = viewObj.GetComponent<GameManagerView>();
+		bullet.SetParent(view.transform);
+		if(enemyPlayer.playerNumber == 1) {
+			bullet.position = view.transform.TransformPoint(view.player2Positions[Position]);
+			bullet.LookAt(view.transform.TransformPoint(view.player1Positions[Position]));
+		}
+		else {
+			bullet.position = view.transform.TransformPoint(view.player1Positions[Position]);
+			bullet.LookAt(view.transform.TransformPoint(view.player2Positions[Position]));
+		}
+	}
+
+	public void SpawnExplosion(Player enemyPlayer) {
+		//Spawn explosion
+		var prefab = Resources.Load("Ugly Programmer Explosion");
+		var explosionObj = Object.Instantiate(prefab) as GameObject;
+		var explosion = explosionObj.transform;
+		var viewObj = Object.FindObjectOfType<GameManagerView>();
+		GameManagerView view = viewObj.GetComponent<GameManagerView>();
+		explosion.SetParent(view.transform);
+		if(enemyPlayer.playerNumber == 1)
+			explosion.position = view.transform.TransformPoint(view.player1Positions[enemyPlayer.Position]);
+		else
+			explosion.position = view.transform.TransformPoint(view.player2Positions[enemyPlayer.Position]);
+	}
+
+	public void SpawnReverseExplosion(Player enemyPlayer) {
+		//Spawn explosion
+		var prefab = Resources.Load("Ugly Programmer Explosion Reverse");
+		var explosionObj = Object.Instantiate(prefab) as GameObject;
+		var explosion = explosionObj.transform;
+		var viewObj = Object.FindObjectOfType<GameManagerView>();
+		GameManagerView view = viewObj.GetComponent<GameManagerView>();
+		explosion.SetParent(view.transform);
+		if(enemyPlayer.playerNumber == 1)
+			explosion.position = view.transform.TransformPoint(view.player1Positions[enemyPlayer.Position]);
+		else
+			explosion.position = view.transform.TransformPoint(view.player2Positions[enemyPlayer.Position]);
 	}
 
 	public void ExecuteAction(PlayerAction action, Player enemy) {
