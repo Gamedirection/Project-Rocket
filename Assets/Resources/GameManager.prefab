@@ -1649,7 +1649,7 @@ MonoBehaviour:
   storedTimestamp: 0
   gameType: 0
   isPlayer2AI: 0
-  waitTimeSpeed: 3
+  waitTimeSpeed: 1.5
   waitTimeStrategy: 1
 --- !u!114 &114462021831082460
 MonoBehaviour:

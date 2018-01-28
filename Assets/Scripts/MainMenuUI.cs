@@ -204,6 +204,13 @@ public class MainMenuUI : MonoBehaviour {
 				sfxVolume = (sfxVolume - 5f) % -60f;
 				audioMixer.SetFloat("SFX Volume", sfxVolume);
 				break;
+			//Ambience Volume
+			case 5:
+				float ambVolume;
+				audioMixer.GetFloat("Amb Volume", out ambVolume);
+				ambVolume = (ambVolume - 5f) % -60f;
+				audioMixer.SetFloat("Amb Volume", ambVolume);
+				break;
 			default:
 				break;
 		}
@@ -211,16 +218,18 @@ public class MainMenuUI : MonoBehaviour {
 	}
 
 	void UpdateOptionTexts() {
-		float masterVolume, musicVolume, sfxVolume;
+		float masterVolume, musicVolume, sfxVolume, ambVolume;
 		audioMixer.GetFloat("Master Volume", out masterVolume);
 		audioMixer.GetFloat("Music Volume", out musicVolume);
 		audioMixer.GetFloat("SFX Volume", out sfxVolume);
+		audioMixer.GetFloat("Amb Volume", out ambVolume);
 
 		optionTexts[0].text = string.Format(Screen.currentResolution.width + "x" + Screen.currentResolution.height, 0);
 		optionTexts[1].text = Screen.fullScreen ? "Fullscreen" : "Windowed";
 		optionTexts[2].text = string.Format("Master Vol\n{0} dB", masterVolume);
 		optionTexts[3].text = string.Format("Music Vol\n{0} dB", musicVolume);
 		optionTexts[4].text = string.Format("SFX Vol\n{0} dB", sfxVolume);
+		optionTexts[5].text = string.Format("Ambience Vol\n{0} dB", ambVolume);
 	}
 	#endregion
 
@@ -230,12 +239,12 @@ public class MainMenuUI : MonoBehaviour {
 			guiElements.pressJoystickLeft();
 		}
 		if(InputManager.PressedRightButton()) {
-			optionsMenuItem = Mathf.Min(optionsMenuItem + 1, 4);
+			optionsMenuItem = Mathf.Min(optionsMenuItem + 1, 5);
 			guiElements.pressJoystickRight();
 		}
 
-		float startPoint = OptionsBar.sizeDelta.x / 5f / 2f;
-		float offset = OptionsBar.sizeDelta.x / 5f;
+		float startPoint = OptionsBar.sizeDelta.x / 6f / 2f;
+		float offset = OptionsBar.sizeDelta.x / 6f;
 		Vector2 goalPosition = new Vector2( -startPoint - offset * (optionsMenuItem), 0);
 		OptionsBar.anchoredPosition = Vector2.Lerp( OptionsBar.anchoredPosition, goalPosition, Time.deltaTime * 3f);
 
