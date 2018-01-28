@@ -36,6 +36,7 @@ public class Player {
 
 	public void Block() {
 		Defending = true;
+		SFXPlayer.PlaySoundEffect("ShieldUp", 1f);
 		DisplayGameLog.LogString(string.Format("Player {0} <color=cyan>defends</color>!", playerNumber));
 	}
 

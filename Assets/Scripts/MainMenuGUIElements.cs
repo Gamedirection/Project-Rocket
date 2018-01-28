@@ -21,7 +21,7 @@ public class MainMenuGUIElements : MonoBehaviour {
 
 	public void pressShieldButton() {
 		guiInteraction(shieldButton, shieldButtonFrames, 0.05f);
-		PlayUISound(UISounds[1], 0.5f);
+		PlayUISound(UISounds[0], 0.5f);
 	}
 
 	public void pressJoystickLeft() {
